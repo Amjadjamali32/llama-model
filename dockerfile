@@ -1,24 +1,24 @@
-# Use the official Python 3.10 slim image
-FROM python:3.10-slim
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the current directory contents into the container
+# Copy the current directory contents into the container at /app
 COPY . /app
-
-# updating pip
-RUN python -m pip install --upgrade pip
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the Flask port (default Flask port)
-EXPOSE 5000
+# Copy .env file (if exists) into the container
+COPY .env /app/.env
 
-# Set environment variables for Flask
+# Set environment variables for Flask app
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
-# Command to run the application
+# Expose port 5000 for Flask
+EXPOSE 5000
+
+# Run the Flask app
 CMD ["flask", "run"]
